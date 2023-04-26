@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"log"
+	"math/big"
 )
 
 // IntToHex converts an int64 to a byte array
@@ -15,4 +16,12 @@ func IntToHex(num int64) []byte {
 	}
 
 	return buff.Bytes()
+}
+
+func DeSerializeRS(signature []byte) (*big.Int, *big.Int) {
+	sigLen := len(signature)
+	r := new(big.Int).SetBytes(signature[:sigLen/2])
+	s := new(big.Int).SetBytes(signature[sigLen/2:])
+
+	return r, s
 }

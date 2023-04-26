@@ -29,7 +29,7 @@ func NewProofOfWork(b *Block) *ProofOfWork {
 
 // Run performs a proof-of-work
 // implement
-func (pow *ProofOfWork) Run() (int, []byte) {
+func (pow *ProofOfWork) Run() (int64, []byte) {
 	return 0, nil
 }
 

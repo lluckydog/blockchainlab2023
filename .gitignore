@@ -5,6 +5,7 @@
 *.so
 *.dylib
 *.bak
+*.pdf
 *.sum
 .DS_Store
 
@@ -16,6 +17,7 @@
 
 .idea/
 target/
+.vscode/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/

@@ -26,9 +26,11 @@ func NewMerkleNode(left, right *MerkleNode, data []byte) *MerkleNode {
 }
 
 func (t *MerkleTree) SPVproof(index int) ([][]byte, error) {
+
 	return nil, nil
 }
 
 func (t *MerkleTree) VerifyProof(index int, path [][]byte) (bool, error) {
+
 	return true, nil
 }

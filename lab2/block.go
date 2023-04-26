@@ -2,24 +2,31 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/gob"
 	"log"
 	"time"
 )
 
+const curVersion = 1
+
 // Block keeps block headers
 type Block struct {
-	Timestamp     int64
-	Data          [][]byte
-	PrevBlockHash []byte
-	Hash          []byte
-	Nonce         int
+	Header *BlkHeader
+	Body   *BlkBody
 }
 
-func (b *Block) HashData() []byte {
-	mTree := NewMerkleTree(b.Data)
+type BlkHeader struct {
+	Version       int64
+	PrevBlockHash []byte
+	MerkleRoot    []byte
+	Timestamp     int64
+	Bits          int64
+	Nonce         int64
+}
 
-	return mTree.RootNode.Data
+type BlkBody struct {
+	Transactions Transactions
 }
 
 // Serialize serializes the block
@@ -35,26 +42,57 @@ func (b *Block) Serialize() []byte {
 	return result.Bytes()
 }
 
-// NewBlock creates and returns Block
-func NewBlock(datas [][]byte, prevBlockHash []byte) *Block {
-	blockData := [][]byte{}
-	for _, data := range datas {
-		blockData = append(blockData, data)
+func (b *Block) SetNonce(nonce int64) {
+	b.Header.Nonce = nonce
+}
+
+func (b *Block) GetTransactions() Transactions {
+	return b.Body.Transactions
+}
+
+func (b *Block) GetPrevhash() []byte {
+	return b.Header.PrevBlockHash
+}
+
+func (b *Block) CalCulHash() []byte {
+	res := sha256.Sum256(b.Serialize())
+	return res[:]
+}
+
+func NewBlkHeader(transactions Transactions, prevBlockHash []byte) *BlkHeader {
+	return &BlkHeader{
+		Version:       curVersion,
+		PrevBlockHash: prevBlockHash,
+		MerkleRoot:    transactions.CalculateHash(),
+		Timestamp:     time.Now().Unix(),
+		Bits:          targetBits,
+		Nonce:         0,
 	}
+}
 
-	block := &Block{time.Now().Unix(), blockData, prevBlockHash, []byte{}, 0}
+func NewBlkBody(transactions Transactions) *BlkBody {
+	return &BlkBody{transactions}
+}
+
+// NewBlock creates and returns Block
+func NewBlock(transactions Transactions, prevBlockHash []byte) *Block {
+	head := NewBlkHeader(transactions, prevBlockHash)
+	body := NewBlkBody(transactions)
+	block := &Block{
+		Header: head,
+		Body:   body,
+	}
 	pow := NewProofOfWork(block)
-	nonce, hash := pow.Run()
+	nonce, _ := pow.Run()
 
-	block.Hash = hash[:]
-	block.Nonce = nonce
+	block.SetNonce(nonce)
 
 	return block
 }
 
 // NewGenesisBlock creates and returns genesis Block
-func NewGenesisBlock() *Block {
-	return NewBlock([][]byte{[]byte("Genesis Block")}, []byte{})
+func NewGenesisBlock(coionbase *Transaction) *Block {
+	return NewBlock([]*Transaction{coionbase}, []byte{})
 }
 
 // DeserializeBlock deserializes a block

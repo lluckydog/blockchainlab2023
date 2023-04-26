@@ -171,7 +171,6 @@ func (t *MerkleTree) VerifyProof(index int, path [][]byte) (bool, error) //验�
 ### Transaction部分
 
 ```
-func NewCoinbaseTx(toAddr []byte, data []byte) *Transaction //生成一笔coinbase交易 （对应coinbase金额为baseValue）
 func (t *Transaction) IsCoinBase() bool //coinbase交易判断
 func (t *Transaction) Verify(prevTXs map[string]*Transaction) bool  //交易验证
 

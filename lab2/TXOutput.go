@@ -15,7 +15,7 @@ func (out *TXOutput) Lock(address []byte) {
 }
 
 func (out *TXOutput) IsLockedWithKey(pubKeyHash []byte) bool {
-	return true
+	return bytes.Compare(out.PubKeyHash, pubKeyHash) == 0
 }
 
 func NewTXOutput(value int, address []byte) *TXOutput {

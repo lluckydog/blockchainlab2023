@@ -138,6 +138,7 @@ P2PKH对应的计算脚本如下：
 
 在这个验证方式中，通过`OP_EQUALVERIFY`验证了公钥哈希是否和公钥一致，签名是否是和数据一致。
 
+在这个试验中，我们先实现对于公钥验证的部分
 ## 实验内容
 
 ### 目录结构
@@ -184,7 +185,6 @@ func (w *Wallet) GetAddress() []byte //获取公钥对应的地址
 
 ```
 func (out *TXOutput) Lock(address []byte)   //设置锁定脚本PubkeyHash部分
-func (out *TXOutput) IsLockedWithKey(pubKeyHash []byte) bool  //判断是否能够解锁
 ```
 
 

@@ -172,8 +172,6 @@ func (t *MerkleTree) VerifyProof(index int, path [][]byte) (bool, error) //验�
 
 ```
 func (t *Transaction) IsCoinBase() bool //coinbase交易判断
-func (t *Transaction) Verify(prevTXs map[string]*Transaction) bool  //交易验证
-
 ```
 
 ### Wallet部分
@@ -181,6 +179,15 @@ func (t *Transaction) Verify(prevTXs map[string]*Transaction) bool  //交易验�
 ```
 func (w *Wallet) GetAddress() []byte //获取公钥对应的地址
 ```
+
+### TXOutput部分
+
+```
+func (out *TXOutput) Lock(address []byte)   //设置锁定脚本PubkeyHash部分
+func (out *TXOutput) IsLockedWithKey(pubKeyHash []byte) bool  //判断是否能够解锁
+```
+
+
 
 ## 参考资料
 

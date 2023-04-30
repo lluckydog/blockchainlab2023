@@ -123,8 +123,9 @@ type TXOutput struct {
 ![image-20230425173638277](./fig/address.png)
 
 1. 计算公钥的哈希值（`RIPEMD16(SHA256(PubKey))`）
-2. 计算公钥哈希的双重哈希加密，取**前4个字节**作为校验和
-3. `版本号，公钥哈希，校验和`的组合通过Base58加密生成比特币的地址
+2.  地址计算前加入版本号
+3. 把步骤2的内容通过计算公钥哈希的双重SHA256哈希加密，取**前4个字节**作为校验和
+4. `版本号，公钥哈希，校验和`的组合通过Base58加密生成比特币的地址
 
 ### P2PKH
 
@@ -198,3 +199,6 @@ func (out *TXOutput) Lock(address []byte)   //设置锁定脚本PubkeyHash部分
 [Merkle Tree](https://en.bitcoin.it/wiki/Protocol_documentation#Merkle_Trees)
 
 [区块链哈希算法](https://en.bitcoin.it/wiki/Block_hashing_algorithm)
+
+
+

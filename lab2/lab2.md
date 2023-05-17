@@ -120,7 +120,7 @@ type TXOutput struct {
 
 比特币上的地址是通过公钥生成的一个数据，是通过`RIPEMD16`和`sha256`加密，`Base58`编码生成，对应生成比特币上的方法如下：
 
-![image-20230425173638277](./fig/address.png)
+![image-20230425173638277](./fig/payload.jpg)
 
 1. 计算公钥的哈希值（`RIPEMD16(SHA256(PubKey))`）
 2.  地址计算前加入版本号

@@ -271,6 +271,20 @@ func (bc *Blockchain) FindUTXO() map[string]TXOutputs
 func NewUTXOTransaction(from, to []byte, amount int, UTXOSet *UTXOSet) *Transaction
 ```
 
+###  基本使用
+
+```
+go run . //查看cli相关的用法
+go run .  createblockchain -address ADDRESS //创建区块链
+go run .  createwallet //创建钱包
+go run .  getbalance -address ADDRESS //查询账户余额
+go run .  listaddresses //查询区块链上的地址
+go run .  printchain //打印区块链
+go run .  reindexutxo //重构UTXO池
+go run .  send -from FROM -to TO -amount AMOUNT //发起转账交易
+
+```
+
 
 
 ## 参考资料

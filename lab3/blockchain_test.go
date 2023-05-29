@@ -12,6 +12,7 @@ func TestMineBlock(t *testing.T) {
 	//address, _ := hex.DecodeString("65376a4267326f6765535244505370584b77664e343948574d615479734a6b7338")
 	toaddr, _ := hex.DecodeString("20277e9c9fa0838769ec353bd8c390c6aec277d6d5e46580b7310ac13b13fcba57")
 	bc := NewBlockchain()
+	defer bc.Close()
 	data := []byte("")
 	tx := NewCoinbaseTx(toaddr, data)
 	txs := make([]*Transaction, 0)
@@ -33,6 +34,7 @@ func TestMineBlock(t *testing.T) {
 func TestFindUTXO(t *testing.T) {
 	//address, _ := hex.DecodeString("65376a4267326f6765535244505370584b77664e343948574d615479734a6b7338")
 	bc := NewBlockchain()
+	defer bc.Close()
 	r := bc.FindUTXO()
 	for k, v := range r {
 		fmt.Printf("%s %d\n", k, v)

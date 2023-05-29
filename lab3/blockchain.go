@@ -5,9 +5,10 @@ import (
 	"crypto/ecdsa"
 	"encoding/hex"
 	"fmt"
-	"github.com/btcsuite/btcutil/base58"
 	"log"
 	"os"
+
+	"github.com/btcsuite/btcutil/base58"
 
 	"github.com/boltdb/bolt"
 )
@@ -204,6 +205,10 @@ func NewBlockchain() *Blockchain {
 func (bc *Blockchain) FindUTXO() map[string]TXOutputs {
 
 	return nil
+}
+
+func (bc *Blockchain) Close() error {
+	return bc.db.Close()
 }
 
 func dbExists() bool {

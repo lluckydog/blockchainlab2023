@@ -3,9 +3,11 @@ package main
 import (
 	"encoding/hex"
 	"testing"
+
 	//"fmt"
 	"crypto/elliptic"
 	"encoding/gob"
+
 	"github.com/stretchr/testify/assert"
 )
 
@@ -13,6 +15,7 @@ func TestNewUTXOTransaction(t *testing.T) {
 	gob.Register(elliptic.P256())
 	address, _ := hex.DecodeString("5154677941543348544752664633674a48514359376d6d56786d364e753655654d")
 	bc := NewBlockchain()
+	defer bc.Close()
 	var utxoset UTXOSet
 	utxoset.Blockchain = bc
 	to, _ := hex.DecodeString("575358554b387950714e55696159566f6f6371767163766d533464457539574836")

@@ -10,6 +10,7 @@ import (
 func TestFindUnspentOutputs(t *testing.T) {
 	//address, _ := hex.DecodeString("65376a4267326f6765535244505370584b77664e343948574d615479734a6b7338")
 	bc := NewBlockchain()
+	defer bc.Close()
 	var utxoset UTXOSet
 	utxoset.Blockchain = bc
 	pkh := []byte{0x1, 0x57, 0x12, 0x68, 0xd0, 0x4e, 0x43, 0x3c, 0x62, 0xac, 0xf1, 0xf8, 0x38, 0xf3, 0xc4, 0x44, 0xb9, 0xb6, 0xda, 0xbc}

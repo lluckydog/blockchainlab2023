@@ -1,7 +1,6 @@
 package main
 
 import (
-	"math/big"
 	"testing"
 )
 
@@ -26,9 +25,7 @@ func TestRun(t *testing.T) {
 	blkbody := BlkBody{txs}
 	block := &Block{&blkheader, &blkbody}
 	pow := NewProofOfWork(block)
-	target := big.NewInt(1)
-	target.Lsh(target, uint(246))
-	pow.target = target
+
 	nonce, _ := pow.Run()
 	block.Header.Nonce = nonce
 	if !pow.Validate() {
@@ -57,14 +54,12 @@ func TestValidate(t *testing.T) {
 	blkbody := BlkBody{txs}
 	block := &Block{&blkheader, &blkbody}
 	pow := NewProofOfWork(block)
-	target := big.NewInt(1)
-	target.Lsh(target, uint(246))
-	pow.target = target
-	block.Header.Nonce = int64(959)
+
+	block.Header.Nonce = int64(846)
 	if pow.Validate() {
 		t.Error("pow validate fail!")
 	}
-	block.Header.Nonce = int64(960)
+	block.Header.Nonce = int64(847)
 	if !pow.Validate() {
 		t.Error("pow validate fail!")
 	}

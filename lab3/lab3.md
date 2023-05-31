@@ -69,7 +69,7 @@ type Blockchain struct {
 
 
 
-在本次实验中，我们选用了一个固定的难度值`targetBits //难度值`来进行计算。难度值意味着我们需要获取一个**1<<(256-targetBits)**小的数。在代码测试时，可以修改Block.NewBlock，来保持困难度不改变)。 计算哈说数据的内容可以通过区块序列化来获得`func (b *Block) Serialize() []byte`
+在本次实验中，我们选用了一个固定的难度值`targetBits //难度值`来进行计算。难度值意味着我们需要获取一个**1<<(256-targetBits)**小的数。在代码测试时，可以修改Block.NewBlock，来保持困难度不改变)。 
 
 ```
 type ProofOfWork struct {

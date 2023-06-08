@@ -41,7 +41,7 @@ func (bc *Blockchain) FindTransaction(ID []byte) (*Transaction, error) {
 			}
 		}
 
-		if len(block.GetPrevhash()) == 0 {
+		if block.GetPrevhash() == [32]byte{} {
 			break
 		}
 	}

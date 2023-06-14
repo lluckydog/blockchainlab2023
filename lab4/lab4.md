@@ -24,9 +24,20 @@
 
 ### 合约的编译和部署
 
-在本次试验中，我们使用Remix 集成开发环境可以开发、部署和管理类似区块链的以太坊智能合约。相应的，我们可以通过下载对应的VSCode插件。
+在本次试验中，我们使用[Truffle](https://trufflesuite.com/docs/truffle/) 集成开发环境可以开发、部署和管理类似区块链的以太坊智能合约。
 
-![](./fig/Remix.png)
+truffle的项目对应文件目录如下：
+
+```
+├── build //对应合约编译生成的内容
+│   └── contracts
+├── contracts //合约的位置
+│   └── hello.sol 
+├── migrations //对应deploy执行的部分
+│   └── 1_deploy_contracts.js
+```
+
+
 
 以hello.sol为例，对应文件内容为
 
@@ -53,19 +64,38 @@ contract Counter {
 
 通过compile来编译对应文件
 
-![](./fig/compile.png)
+```
+truffle compile
+```
 
-连接本地区块链
+![image-20230614222824537](/Users/danddy/blockchainlab2023/lab4/fig/compile.png)
 
-![image-20230612144222718](./fig/connect.png)
+启动本地测试链
+
+```
+truffle develop
+```
+
+![image-20230614222720713](/Users/danddy/blockchainlab2023/lab4/fig/netowrk.png)
 
 部署合约
 
-![image-20230610194050293](./fig/deploy.png)
+```
+truffle migrate
+//在console中只需要输入migrate
+```
+
+![image-20230614222112400](./fig/deploy.png)
 
 合约调用
 
-![image-20230610194152927](./fig/call.png)
+```
+let instance = await Counter.deployed() //查询部署的合约
+instance.getCounter() //调用getCounter方法
+instance.increment() //调用increment方法
+```
+
+![image-20230614222447919](./fig/call.png)
 
 ## 实验内容
 
@@ -76,4 +106,4 @@ contract Counter {
 
 [Solidity编写](https://docs.soliditylang.org/zh/v0.8.17/introduction-to-smart-contracts.html)
 
-[remix](https://remix.ethereum.org/)
+[remix](https://trufflesuite.com/docs/truffle/quickstart/)

@@ -106,4 +106,4 @@ instance.increment() //调用increment方法
 
 [Solidity编写](https://docs.soliditylang.org/zh/v0.8.17/introduction-to-smart-contracts.html)
 
-[remix](https://trufflesuite.com/docs/truffle/quickstart/)
+[truffle](https://trufflesuite.com/docs/truffle/quickstart/)

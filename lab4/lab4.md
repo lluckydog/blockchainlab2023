@@ -68,7 +68,7 @@ contract Counter {
 truffle compile
 ```
 
-![image-20230614222824537](/Users/danddy/blockchainlab2023/lab4/fig/compile.png)
+![image-20230614222824537](./fig/compile.png)
 
 启动本地测试链
 
@@ -76,7 +76,7 @@ truffle compile
 truffle develop
 ```
 
-![image-20230614222720713](/Users/danddy/blockchainlab2023/lab4/fig/netowrk.png)
+![image-20230614222720713](./fig/netowrk.png)
 
 部署合约
 

@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
+	"math/big"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestRun(t *testing.T) {
@@ -20,17 +24,17 @@ func TestRun(t *testing.T) {
 		PrevBlockHash: lastHash,
 		MerkleRoot:    txs.CalculateHash(),
 		Bits:          targetBits,
-		Timestamp:     int64(20230526),
+		Timestamp:     int64(20240508),
 	}
 	blkbody := BlkBody{txs}
 	block := &Block{&blkheader, &blkbody}
 	pow := NewProofOfWork(block)
-
+	target := big.NewInt(1)
+	target.Lsh(target, uint(246))
+	pow.target = target
 	nonce, _ := pow.Run()
 	block.Header.Nonce = nonce
-	if !pow.Validate() {
-		t.Error("pow validate fail!")
-	}
+	assert.Equal(t, nonce, int64(121), "pow run fail!")
 }
 
 func TestValidate(t *testing.T) {
@@ -49,17 +53,24 @@ func TestValidate(t *testing.T) {
 		PrevBlockHash: lastHash,
 		MerkleRoot:    txs.CalculateHash(),
 		Bits:          targetBits,
-		Timestamp:     int64(100),
+		Timestamp:     int64(20240508),
 	}
 	blkbody := BlkBody{txs}
 	block := &Block{&blkheader, &blkbody}
 	pow := NewProofOfWork(block)
+	target := big.NewInt(1)
+	target.Lsh(target, uint(246))
+	pow.target = target
 
-	block.Header.Nonce = int64(846)
+	nonce, _ := pow.Run()
+	fmt.Println(nonce)
+	pow.block.Header.Nonce = nonce
+	fmt.Println(pow.Validate())
+	block.Header.Nonce = int64(326)
 	if pow.Validate() {
 		t.Error("pow validate fail!")
 	}
-	block.Header.Nonce = int64(847)
+	block.Header.Nonce = int64(1510)
 	if !pow.Validate() {
 		t.Error("pow validate fail!")
 	}

@@ -6,10 +6,12 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"crypto/sha256"
-	"encoding/gob"
+	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"io/ioutil"
 	"log"
+	"math/big"
 	"os"
 
 	"github.com/btcsuite/btcutil/base58"
@@ -121,36 +123,61 @@ func (ws *Wallets) LoadFromFile() error {
 		log.Panic(err)
 	}
 
-	var wallets Wallets
-	gob.Register(elliptic.P256())
-	decoder := gob.NewDecoder(bytes.NewReader(fileContent))
-	err = decoder.Decode(&wallets)
+	err = json.Unmarshal(fileContent, ws)
 	if err != nil {
 		log.Panic(err)
 	}
-
-	ws.Wallets = wallets.Wallets
 
 	return nil
 }
 
 // SaveToFile saves wallets to a file
-func (ws Wallets) SaveToFile() {
-	var content bytes.Buffer
-
-	gob.Register(elliptic.P256())
-
-	encoder := gob.NewEncoder(&content)
-
-	err := encoder.Encode(ws)
+func (ws *Wallets) SaveToFile() {
+	jsonData, err := json.Marshal(ws)
 	if err != nil {
 		log.Panic(err)
 	}
 
-	err = ioutil.WriteFile(walletFile, content.Bytes(), 0644)
+	err = ioutil.WriteFile(walletFile, jsonData, 0644)
 	if err != nil {
 		log.Panic(err)
 	}
+}
+
+func (w *Wallet) MarshalJSON() ([]byte, error) {
+	// 私钥的D值和公钥都以Base64编码存储
+	keyData := map[string]string{
+		"D":         base64.StdEncoding.EncodeToString(w.PrivateKey.D.Bytes()),
+		"PublicKey": base64.StdEncoding.EncodeToString(w.PublicKey),
+	}
+	return json.Marshal(keyData)
+}
+
+func (w *Wallet) UnmarshalJSON(data []byte) error {
+	keyData := make(map[string]string)
+	if err := json.Unmarshal(data, &keyData); err != nil {
+		return err
+	}
+
+	dBytes, err := base64.StdEncoding.DecodeString(keyData["D"])
+	if err != nil {
+		return err
+	}
+	publicKeyBytes, err := base64.StdEncoding.DecodeString(keyData["PublicKey"])
+	if err != nil {
+		return err
+	}
+
+	// 重构PrivateKey和PublicKey
+	privateKey := new(ecdsa.PrivateKey)
+	privateKey.D = new(big.Int).SetBytes(dBytes)
+	privateKey.PublicKey.Curve = elliptic.P256()
+	privateKey.PublicKey.X, privateKey.PublicKey.Y = elliptic.Unmarshal(elliptic.P256(), publicKeyBytes)
+
+	w.PrivateKey = *privateKey
+	w.PublicKey = publicKeyBytes
+
+	return nil
 }
 
 // ValidateAddress check if address if valid

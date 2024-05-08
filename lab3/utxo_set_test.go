@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/stretchr/testify/assert"
 	//"encoding/hex"
 	//"fmt"
@@ -13,9 +15,13 @@ func TestFindUnspentOutputs(t *testing.T) {
 	defer bc.Close()
 	var utxoset UTXOSet
 	utxoset.Blockchain = bc
-	pkh := []byte{0x1, 0x57, 0x12, 0x68, 0xd0, 0x4e, 0x43, 0x3c, 0x62, 0xac, 0xf1, 0xf8, 0x38, 0xf3, 0xc4, 0x44, 0xb9, 0xb6, 0xda, 0xbc}
+	pkh := []byte{
+		0x65, 0xA9, 0x85, 0x35, 0xA5, 0xAD, 0xD0, 0x68,
+		0x02, 0x0C, 0xE2, 0x52, 0x47, 0x45, 0x77, 0xEB,
+		0x60, 0xFE, 0x96, 0x92,
+	}
 	i, j := utxoset.FindUnspentOutputs(pkh, 200000)
-	//fmt.Printf("%d\n", i)
+	fmt.Printf("%v", j)
 	assert.Equal(t, 209999, i, "findunspentoutputs fails!")
-	assert.Equal(t, j["b294a1dec98fbf06ace81ae2d2f0e18a562578573fb6047ce616548d294ffebd"], []int{1}, "findunspentoutputs fails!")
+	assert.Equal(t, j["5a277a0a503382ce49aee4aeb74ad61651911d2eb44dde01a18e5d78776954ed"], []int{1}, "findunspentoutputs fails!")
 }

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/big"
 	"testing"
 
@@ -63,14 +62,12 @@ func TestValidate(t *testing.T) {
 	pow.target = target
 
 	nonce, _ := pow.Run()
-	fmt.Println(nonce)
 	pow.block.Header.Nonce = nonce
-	fmt.Println(pow.Validate())
 	block.Header.Nonce = int64(326)
 	if pow.Validate() {
 		t.Error("pow validate fail!")
 	}
-	block.Header.Nonce = int64(1510)
+	block.Header.Nonce = int64(336)
 	if !pow.Validate() {
 		t.Error("pow validate fail!")
 	}
